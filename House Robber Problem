@@ -1,0 +1,25 @@
+//problema rezolvata + explicatii de la chatgpt
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        vector<int> d(nums.size()+1);    // 1. Declare a DP array 'd' of size nums.size()+1.
+        d[0] = nums[0];                  // 2. Base case: The maximum money you can rob from the first house is nums[0].
+        
+        // 3. If there are at least 2 houses, initialize the second element of the DP array.
+        if(nums.size() >= 2) {
+            d[1] = std::max(nums[0], nums[1]);  // You can either rob the first house or the second house, whichever has more money.
+            
+            // 4. Start iterating over the rest of the houses (from the third house onwards).
+            for(int i = 2; i < nums.size(); i++) {
+                // 5. Transition relation: At each house `i`, you have two options:
+                //    - Don't rob the current house and take the maximum money robbed up to the previous house (`d[i-1]`).
+                //    - Rob the current house, but then you have to add the money from the current house (`nums[i]`) to the maximum
+                //      money robbed from the house two steps before (`d[i-2]`).
+                d[i] = std::max(d[i-1], d[i-2] + nums[i]);
+            }
+        }
+
+        // 6. Return the maximum amount robbed after considering all houses (up to the last house).
+        return d[nums.size()-1];
+    }
+};
